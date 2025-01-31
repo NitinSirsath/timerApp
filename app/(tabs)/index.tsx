@@ -16,6 +16,13 @@ export default function TimerListScreen() {
   const [completedTimer, setCompletedTimer] = useState<{ name: string } | null>(
     null
   );
+
+  const loadTimers = useTimerStore((state) => state.loadTimers);
+
+  useEffect(() => {
+    loadTimers(); // ✅ Load timers from AsyncStorage when the app starts
+  }, []);
+
   const [intervals, setIntervals] = useState<{
     [key: string]: NodeJS.Timeout | null;
   }>({});
@@ -46,6 +53,18 @@ export default function TimerListScreen() {
       if (!timer) return;
 
       if (timer.remainingTime > 1) {
+        // ✅ Trigger halfway alert if applicable
+        if (
+          timer.halfwayAlert &&
+          !timer.halfwayAlertTriggered &&
+          timer.remainingTime <= timer.duration / 2
+        ) {
+          useTimerStore
+            .getState()
+            .updateTimer(id, { halfwayAlertTriggered: true });
+          alert(`⏳ Halfway Alert: "${timer.name}" is at 50%!`);
+        }
+
         useTimerStore.getState().updateTimer(id, {
           remainingTime: timer.remainingTime - 1,
           status: "running",
@@ -55,7 +74,7 @@ export default function TimerListScreen() {
         useTimerStore
           .getState()
           .updateTimer(id, { remainingTime: 0, status: "completed" });
-        setCompletedTimer({ name: timer.name }); // ✅ Show modal when completed
+        setCompletedTimer({ name: timer.name });
       }
     }, 1000);
 

@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet, Text, Alert } from "react-native";
-import { Picker } from "@react-native-picker/picker"; // ✅ Import Picker
+import {
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Text,
+  Alert,
+  Switch,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { useTimerStore } from "@/store/useTimerStore";
 import uuid from "react-native-uuid";
 
@@ -8,6 +16,7 @@ export default function CreateTimerScreen() {
   const [name, setName] = useState("");
   const [duration, setDuration] = useState("");
   const [category, setCategory] = useState("Workout"); // ✅ Default category
+  const [halfwayAlert, setHalfwayAlert] = useState(false); // ✅ Toggle state for halfway alert
 
   const addTimer = useTimerStore((state) => state.addTimer);
 
@@ -24,11 +33,14 @@ export default function CreateTimerScreen() {
       remainingTime: Number(duration),
       category,
       status: "paused",
+      halfwayAlert, // ✅ New property: Store user preference
+      halfwayAlertTriggered: false, // ✅ Ensure it's reset on timer creation
     });
 
     setName("");
     setDuration("");
     setCategory("Workout"); // Reset to default
+    setHalfwayAlert(false); // Reset halfway alert switch
     Alert.alert("Success", "Timer added!");
   };
 
@@ -59,6 +71,12 @@ export default function CreateTimerScreen() {
         </Picker>
       </View>
 
+      {/* ✅ Halfway Alert Toggle */}
+      <View style={styles.switchContainer}>
+        <Text style={styles.label}>Enable Halfway Alert:</Text>
+        <Switch value={halfwayAlert} onValueChange={setHalfwayAlert} />
+      </View>
+
       <Button title="Create Timer" onPress={handleCreateTimer} />
     </View>
   );
@@ -77,5 +95,11 @@ const styles = StyleSheet.create({
   picker: {
     height: 50,
     width: "100%",
+  },
+  switchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 10,
   },
 });
