@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 
+// ✅ Define Timer Type
 export interface Timer {
   id: string;
   name: string;
@@ -19,6 +22,7 @@ interface TimerState {
   updateTimer: (id: string, updates: Partial<Timer>) => Promise<void>;
   deleteTimer: (id: string) => Promise<void>;
   loadTimers: () => Promise<void>;
+  exportTimers: () => Promise<void>;
 }
 
 export const useTimerStore = create<TimerState>((set, get) => ({
@@ -53,5 +57,35 @@ export const useTimerStore = create<TimerState>((set, get) => ({
     const remainingTimers = get().timers.filter((t) => t.id !== id);
     set({ timers: remainingTimers });
     await AsyncStorage.setItem("timers", JSON.stringify(remainingTimers));
+  },
+
+  // ✅ Export Timers as a JSON File
+  exportTimers: async () => {
+    try {
+      const timers = get().timers;
+      if (timers.length === 0) {
+        alert("No timer data to export.");
+        return;
+      }
+
+      // ✅ Convert timers to JSON
+      const json = JSON.stringify(timers, null, 2);
+      const fileUri = FileSystem.documentDirectory + "timers.json";
+
+      // ✅ Save JSON file
+      await FileSystem.writeAsStringAsync(fileUri, json, {
+        encoding: FileSystem.EncodingType.UTF8,
+      });
+
+      // ✅ Share or download the file
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(fileUri);
+      } else {
+        alert("Sharing is not available on this device.");
+      }
+    } catch (error) {
+      console.error("Error exporting timers:", error);
+      alert("Failed to export timers.");
+    }
   },
 }));

@@ -16,7 +16,7 @@ export default function TimerListScreen() {
   const [completedTimer, setCompletedTimer] = useState<{ name: string } | null>(
     null
   );
-
+  const { exportTimers } = useTimerStore();
   const loadTimers = useTimerStore((state) => state.loadTimers);
 
   useEffect(() => {
@@ -128,7 +128,7 @@ export default function TimerListScreen() {
   return (
     <View style={styles.container}>
       {timers.length === 0 && <Text>No timers available</Text>}
-
+      <Button title="Export Timer Data" onPress={exportTimers} />
       <Modal
         isVisible={!!completedTimer}
         onBackdropPress={closeModal}
