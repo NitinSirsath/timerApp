@@ -9,9 +9,13 @@ import {
 } from "react-native";
 import { useTimerStore } from "@/store/useTimerStore";
 import { Bar as ProgressBar } from "react-native-progress";
+import Modal from "react-native-modal";
 
 export default function TimerListScreen() {
   const { timers, updateTimer, deleteTimer } = useTimerStore();
+  const [completedTimer, setCompletedTimer] = useState<{ name: string } | null>(
+    null
+  );
   const [intervals, setIntervals] = useState<{
     [key: string]: NodeJS.Timeout | null;
   }>({});
@@ -51,10 +55,15 @@ export default function TimerListScreen() {
         useTimerStore
           .getState()
           .updateTimer(id, { remainingTime: 0, status: "completed" });
+        setCompletedTimer({ name: timer.name }); // ✅ Show modal when completed
       }
     }, 1000);
 
     setIntervals((prev) => ({ ...prev, [id]: interval }));
+  };
+
+  const closeModal = () => {
+    setCompletedTimer(null);
   };
 
   const pauseTimer = (id: string) => {
@@ -100,6 +109,22 @@ export default function TimerListScreen() {
   return (
     <View style={styles.container}>
       {timers.length === 0 && <Text>No timers available</Text>}
+
+      <Modal
+        isVisible={!!completedTimer}
+        onBackdropPress={closeModal}
+        animationIn="zoomIn"
+        animationOut="zoomOut"
+      >
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>🎉 Timer Completed!</Text>
+          <Text style={styles.modalText}>
+            Great job! Your timer **{completedTimer?.name}** has completed.
+          </Text>
+          <Button title="OK" onPress={closeModal} />
+        </View>
+      </Modal>
+
       <FlatList
         data={Object.keys(groupedTimers)}
         keyExtractor={(category) => category}
@@ -208,4 +233,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 10,
   },
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
+  modalText: { fontSize: 16, textAlign: "center", marginBottom: 10 },
 });
