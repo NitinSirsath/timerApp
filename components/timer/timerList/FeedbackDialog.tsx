@@ -34,38 +34,6 @@ const FeedbackDialog = ({ completedTimer, closeModal }: IProps) => {
 export default FeedbackDialog;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-
-  categoryContainer: { marginBottom: 10 },
-  categoryHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 5,
-  },
-
-  categoryTitle: { fontSize: 18, fontWeight: "bold" },
-
-  bulkActions: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginBottom: 5,
-  },
-
-  timerCard: {
-    padding: 15,
-    borderBottomWidth: 1,
-  },
-
-  timerName: { fontSize: 16, fontWeight: "bold" },
-
-  buttonGroup: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-
   modalContainer: {
     padding: 20,
     borderRadius: 10,
@@ -74,8 +42,4 @@ const styles = StyleSheet.create({
 
   modalTitle: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
   modalText: { fontSize: 16, textAlign: "center", marginBottom: 10 },
-
-  filterContainer: { marginBottom: 15 },
-  filterLabel: { fontSize: 16, marginBottom: 5 },
-  picker: { height: 60 },
 });
