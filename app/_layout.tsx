@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useThemeStore } from "@/store/useThemeStore"; // ✅ Import theme store
+import NoticePopup from "@/components/notice/NoticePopup";
 
 export {
   ErrorBoundary, // Catch any errors thrown by the Layout component.
@@ -57,6 +58,7 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={theme === "dark" ? DarkTheme : DefaultTheme}>
+      <NoticePopup />
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
