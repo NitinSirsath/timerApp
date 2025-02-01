@@ -1,17 +1,7 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import { Bar as ProgressBar } from "react-native-progress";
-import Modal from "react-native-modal";
+import { View, Text, Button, StyleSheet } from "react-native";
 import useIndex from "@/hooks/timer/useIndex";
-import { Picker } from "@react-native-picker/picker";
-import { useTheme } from "@react-navigation/native"; // ✅ Import theme hook
+import { useTheme } from "@react-navigation/native";
 import FeedbackDialog from "@/components/timer/timerList/FeedbackDialog";
 import CategoryPicker from "@/components/timer/timerList/CategoryPicker";
 import FlatlistTimer from "@/components/timer/timerList/FlatlistTimer";
