@@ -15,7 +15,7 @@ const CategoryPicker = ({
   selectedCategory,
   setSelectedCategory,
 }: IProps) => {
-  const { colors, dark } = useTheme(); // ✅ Get theme colors and dark mode flag
+  const { colors, dark } = useTheme();
 
   return (
     <View
@@ -31,7 +31,7 @@ const CategoryPicker = ({
         selectedValue={selectedCategory}
         onValueChange={(itemValue) => setSelectedCategory(itemValue)}
         style={[styles.picker, { color: colors.text }]}
-        dropdownIconColor={colors.text} // ✅ Proper dropdown visibility
+        dropdownIconColor={colors.text}
       >
         <Picker.Item label="All Categories" value={null} color={colors.text} />
         {Object.keys(groupedTimers).map((category) => (
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   filterContainer: {
     borderWidth: 1,
     borderRadius: 8,
-    paddingHorizontal: 10, // ✅ Extra padding for better touch area
+    paddingHorizontal: 10,
     marginBottom: 15,
   },
   picker: {
