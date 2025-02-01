@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   TextInput,
   Button,
   StyleSheet,
   Text,
-  Alert,
   Switch,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { useTimerStore } from "@/store/useTimerStore";
 import useCreate from "@/hooks/timer/useCreate";
+import { useTheme } from "@react-navigation/native"; // ✅ Import theme hook
 
 export default function CreateTimerScreen() {
   const {
@@ -25,25 +24,44 @@ export default function CreateTimerScreen() {
     handleCreateTimer,
   } = useCreate();
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Timer Name:</Text>
-      <TextInput style={styles.input} value={name} onChangeText={setName} />
+  const { colors } = useTheme(); // ✅ Get theme-based colors
 
-      <Text style={styles.label}>Duration (seconds):</Text>
+  return (
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.label, { color: colors.text }]}>Timer Name:</Text>
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          { color: colors.text, borderColor: colors.border },
+        ]}
+        value={name}
+        onChangeText={setName}
+        placeholder="Enter Timer Name"
+        placeholderTextColor={colors.text + "99"} // ✅ Light placeholder color
+      />
+
+      <Text style={[styles.label, { color: colors.text }]}>
+        Duration (seconds):
+      </Text>
+      <TextInput
+        style={[
+          styles.input,
+          { color: colors.text, borderColor: colors.border },
+        ]}
         value={duration}
         onChangeText={setDuration}
         keyboardType="numeric"
+        placeholder="Enter Duration"
+        placeholderTextColor={colors.text + "99"}
       />
 
-      <Text style={styles.label}>Category:</Text>
-      <View style={styles.pickerContainer}>
+      <Text style={[styles.label, { color: colors.text }]}>Category:</Text>
+      <View style={[styles.pickerContainer, { borderColor: colors.border }]}>
         <Picker
           selectedValue={category}
-          onValueChange={(itemValue) => setCategory(itemValue)}
-          style={styles.picker}
+          onValueChange={setCategory}
+          style={[styles.picker, { color: colors.text }]}
+          dropdownIconColor={colors.text} // ✅ Proper dropdown styling
         >
           <Picker.Item label="Workout" value="Workout" />
           <Picker.Item label="Study" value="Study" />
@@ -54,23 +72,39 @@ export default function CreateTimerScreen() {
 
       {/* ✅ Halfway Alert Toggle */}
       <View style={styles.switchContainer}>
-        <Text style={styles.label}>Enable Halfway Alert:</Text>
-        <Switch value={halfwayAlert} onValueChange={setHalfwayAlert} />
+        <Text style={[styles.label, { color: colors.text }]}>
+          Enable Halfway Alert:
+        </Text>
+        <Switch
+          value={halfwayAlert}
+          onValueChange={setHalfwayAlert}
+          thumbColor={colors.primary} // ✅ Themed switch color
+          trackColor={{ false: "#767577", true: colors.primary }}
+        />
       </View>
 
-      <Button title="Create Timer" onPress={handleCreateTimer} />
+      <Button
+        title="Create Timer"
+        onPress={handleCreateTimer}
+        color={colors.primary}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
+
   label: { fontSize: 16, marginVertical: 5 },
-  input: { borderWidth: 1, padding: 8, marginBottom: 10 },
+  input: {
+    borderWidth: 1,
+    padding: 8,
+    marginBottom: 10,
+    borderRadius: 5,
+  },
   pickerContainer: {
     borderWidth: 1,
     borderRadius: 5,
-    borderColor: "#ccc",
     marginBottom: 10,
   },
   picker: {
