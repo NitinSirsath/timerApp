@@ -4,7 +4,13 @@ import React from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { Bar as ProgressBar } from "react-native-progress";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Card, IconButton, Button, Divider } from "react-native-paper"; // ✅ Material UI components
+import { Card, IconButton, Button, Divider } from "react-native-paper";
+import Animated, {
+  Layout,
+  FadeIn,
+  FadeOut,
+  BounceIn,
+} from "react-native-reanimated";
 
 interface IProps {
   groupedTimers: Record<string, Timer[]>;
@@ -38,7 +44,12 @@ const FlatlistTimer = ({
       data={Object.keys(groupedTimers)}
       keyExtractor={(category) => category}
       renderItem={({ item: category }) => (
-        <View style={styles.categoryContainer}>
+        <Animated.View
+          layout={Layout.springify()}
+          entering={FadeIn.duration(300)}
+          exiting={FadeOut.duration(200)}
+          style={styles.categoryContainer}
+        >
           {/* Expand/Collapse Header */}
           <Card
             style={[styles.categoryHeader, { backgroundColor: colors.card }]}
@@ -69,7 +80,9 @@ const FlatlistTimer = ({
 
           {/* Bulk Actions for Category */}
           {expandedCategories[category] && (
-            <View
+            <Animated.View
+              entering={FadeIn.duration(300)}
+              exiting={FadeOut.duration(200)}
               style={[styles.bulkActions, { backgroundColor: colors.card }]}
             >
               <Button
@@ -90,7 +103,7 @@ const FlatlistTimer = ({
               >
                 Reset All
               </Button>
-            </View>
+            </Animated.View>
           )}
 
           {/* Timers List */}
@@ -99,68 +112,73 @@ const FlatlistTimer = ({
               data={groupedTimers[category]}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
-                <Card
-                  style={[styles.timerCard, { backgroundColor: colors.card }]}
-                  mode="elevated"
+                <Animated.View
+                  entering={FadeIn.duration(500)}
+                  layout={Layout.springify()}
                 >
-                  <Card.Content>
-                    <Text style={[styles.timerName, { color: colors.text }]}>
-                      {item.name}
-                    </Text>
-                    {item.remainingTime > 0 && (
-                      <ProgressBar
-                        progress={item.remainingTime / item.duration}
-                        width={null}
-                        color={colors.primary}
-                      />
-                    )}
-                    <Text style={{ color: colors.text }}>
-                      {item.remainingTime} sec remaining
-                    </Text>
-                  </Card.Content>
+                  <Card
+                    style={[styles.timerCard, { backgroundColor: colors.card }]}
+                    mode="elevated"
+                  >
+                    <Card.Content>
+                      <Text style={[styles.timerName, { color: colors.text }]}>
+                        {item.name}
+                      </Text>
+                      {item.remainingTime > 0 && (
+                        <ProgressBar
+                          progress={item.remainingTime / item.duration}
+                          width={null}
+                          color={colors.primary}
+                        />
+                      )}
+                      <Text style={{ color: colors.text }}>
+                        {item.remainingTime} sec remaining
+                      </Text>
+                    </Card.Content>
 
-                  <Divider />
+                    <Divider />
 
-                  <Card.Actions>
-                    {item.status === "paused" && (
+                    <Card.Actions>
+                      {item.status === "paused" && (
+                        <Button
+                          icon="play-circle"
+                          mode="text"
+                          onPress={() => startTimer(item.id)}
+                        >
+                          Start
+                        </Button>
+                      )}
+                      {item.status === "running" && (
+                        <Button
+                          icon="pause-circle"
+                          mode="text"
+                          onPress={() => pauseTimer(item.id)}
+                        >
+                          Pause
+                        </Button>
+                      )}
                       <Button
-                        icon="play-circle"
+                        icon="restore"
                         mode="text"
-                        onPress={() => startTimer(item.id)}
+                        onPress={() => resetTimer(item.id, item.duration)}
                       >
-                        Start
+                        Reset
                       </Button>
-                    )}
-                    {item.status === "running" && (
                       <Button
-                        icon="pause-circle"
+                        icon="delete"
                         mode="text"
-                        onPress={() => pauseTimer(item.id)}
+                        onPress={() => deleteTimer(item.id)}
+                        color="red"
                       >
-                        Pause
+                        Delete
                       </Button>
-                    )}
-                    <Button
-                      icon="restore"
-                      mode="text"
-                      onPress={() => resetTimer(item.id, item.duration)}
-                    >
-                      Reset
-                    </Button>
-                    <Button
-                      icon="delete"
-                      mode="text"
-                      onPress={() => deleteTimer(item.id)}
-                      color="red"
-                    >
-                      Delete
-                    </Button>
-                  </Card.Actions>
-                </Card>
+                    </Card.Actions>
+                  </Card>
+                </Animated.View>
               )}
             />
           )}
-        </View>
+        </Animated.View>
       )}
     />
   );

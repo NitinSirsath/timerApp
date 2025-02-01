@@ -4,6 +4,7 @@ import { useTheme } from "@react-navigation/native";
 import { TextInput, Button, Switch, Text, Card } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import useCreate from "@/hooks/timer/useCreate";
+import Animated, { FadeIn } from "react-native-reanimated";
 
 export default function CreateTimerScreen() {
   const {
@@ -18,77 +19,106 @@ export default function CreateTimerScreen() {
     handleCreateTimer,
   } = useCreate();
 
-  const { colors } = useTheme(); // ✅ Get theme-based colors
+  const { colors, dark } = useTheme(); // ✅ Get theme-based colors and dark mode flag
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Card mode="elevated" style={styles.card}>
-        <Card.Content>
-          {/* ✅ Timer Name */}
-          <TextInput
-            label="Timer Name"
-            mode="outlined"
-            value={name}
-            onChangeText={setName}
-            placeholder="Enter Timer Name"
-            placeholderTextColor={colors.text + "99"}
-            style={[styles.input, { backgroundColor: colors.card }]}
-            outlineColor={colors.border}
-            textColor={colors.text}
-          />
+    <Animated.View
+      style={[styles.container, { backgroundColor: colors.background }]}
+      entering={FadeIn.duration(500)}
+    >
+      <Animated.View entering={FadeIn.duration(500).springify()}>
+        <Card
+          mode="elevated"
+          style={[styles.card, { backgroundColor: colors.card }]}
+        >
+          <Card.Content>
+            {/* ✅ Timer Name */}
+            <TextInput
+              label="Timer Name"
+              mode="outlined"
+              value={name}
+              onChangeText={setName}
+              placeholder="Enter Timer Name"
+              placeholderTextColor={colors.text + "99"}
+              style={[
+                styles.input,
+                {
+                  backgroundColor: dark ? "#333" : colors.card,
+                  color: colors.text,
+                },
+              ]}
+              outlineColor={colors.border}
+              textColor={colors.text}
+            />
 
-          {/* ✅ Duration Input */}
-          <TextInput
-            label="Duration (seconds)"
-            mode="outlined"
-            value={duration}
-            onChangeText={setDuration}
-            keyboardType="numeric"
-            placeholder="Enter Duration"
-            placeholderTextColor={colors.text + "99"}
-            style={[styles.input, { backgroundColor: colors.card }]}
-            outlineColor={colors.border}
-            textColor={colors.text}
-          />
+            {/* ✅ Duration Input */}
+            <TextInput
+              label="Duration (seconds)"
+              mode="outlined"
+              value={duration}
+              onChangeText={setDuration}
+              keyboardType="numeric"
+              placeholder="Enter Duration"
+              placeholderTextColor={colors.text + "99"}
+              style={[
+                styles.input,
+                {
+                  backgroundColor: dark ? "#333" : colors.card,
+                  color: colors.text,
+                },
+              ]}
+              outlineColor={colors.border}
+              textColor={colors.text}
+            />
 
-          {/* ✅ Category Picker */}
-          <Text style={[styles.label, { color: colors.text }]}>Category</Text>
-          <View
-            style={[styles.pickerContainer, { borderColor: colors.border }]}
-          >
-            <Picker
-              selectedValue={category}
-              onValueChange={setCategory}
-              style={[styles.picker, { color: colors.text }]}
-              dropdownIconColor={colors.text}
+            {/* ✅ Category Picker */}
+            <Text style={[styles.label, { color: colors.text }]}>Category</Text>
+            <View
+              style={[
+                styles.pickerContainer,
+                {
+                  borderColor: colors.border,
+                  backgroundColor: dark ? "#333" : colors.card,
+                },
+              ]}
             >
-              <Picker.Item label="Workout" value="Workout" />
-              <Picker.Item label="Study" value="Study" />
-              <Picker.Item label="Break" value="Break" />
-              <Picker.Item label="Custom" value="Custom" />
-            </Picker>
-          </View>
+              <Picker
+                selectedValue={category}
+                onValueChange={setCategory}
+                style={[styles.picker, { color: colors.text }]}
+                dropdownIconColor={colors.text}
+              >
+                <Picker.Item
+                  label="Workout"
+                  value="Workout"
+                  color={colors.text}
+                />
+                <Picker.Item label="Study" value="Study" color={colors.text} />
+                <Picker.Item label="Break" value="Break" color={colors.text} />
+              </Picker>
+            </View>
 
-          {/* ✅ Halfway Alert Toggle */}
-          <View style={styles.switchContainer}>
-            <Text style={[styles.label, { color: colors.text }]}>
-              Enable Halfway Alert
-            </Text>
-            <Switch value={halfwayAlert} onValueChange={setHalfwayAlert} />
-          </View>
+            {/* ✅ Halfway Alert Toggle */}
+            <View style={styles.switchContainer}>
+              <Text style={[styles.label, { color: colors.text }]}>
+                Enable Halfway Alert
+              </Text>
+              <Switch value={halfwayAlert} onValueChange={setHalfwayAlert} />
+            </View>
 
-          {/* ✅ Create Timer Button */}
-          <Button
-            mode="contained"
-            onPress={handleCreateTimer}
-            style={styles.button}
-            labelStyle={{ fontSize: 16 }}
-          >
-            Create Timer
-          </Button>
-        </Card.Content>
-      </Card>
-    </View>
+            {/* ✅ Create Timer Button */}
+            <Button
+              mode="contained"
+              onPress={handleCreateTimer}
+              style={styles.button}
+              labelStyle={{ fontSize: 16 }}
+            >
+              Create Timer
+            </Button>
+          </Card.Content>
+        </Card>
+      </Animated.View>
+    </Animated.View>
   );
 }
 
@@ -102,11 +132,12 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 12,
     fontSize: 16,
+    borderRadius: 8,
   },
 
   pickerContainer: {
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 8,
     marginBottom: 12,
   },
 

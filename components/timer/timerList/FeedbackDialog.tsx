@@ -1,7 +1,9 @@
 import { useTheme } from "@react-navigation/native";
 import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+
 import Modal from "react-native-modal";
+import { Button } from "react-native-paper";
 
 interface IProps {
   completedTimer: { name: string } | null;
@@ -24,7 +26,9 @@ const FeedbackDialog = ({ completedTimer, closeModal }: IProps) => {
         <Text style={[styles.modalText, { color: colors.text }]}>
           Great job! Your timer **{completedTimer?.name}** has completed.
         </Text>
-        <Button title="OK" onPress={closeModal} />
+        <Button mode="contained" onPress={closeModal}>
+          title="OK"
+        </Button>
       </View>
     </Modal>
   );
