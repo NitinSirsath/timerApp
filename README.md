@@ -21,8 +21,8 @@ Follow these steps to install and run the app:
 ### **Step 1: Clone the Repository**
 
 ```sh
-git clone https://github.com/nitinsirsath/timer-app.git
-cd timer-app
+git clone https://github.com/nitinsirsath/timerApp.git
+cd timerApp
 ```
 
 Step 2: Install Dependencies
@@ -42,13 +42,13 @@ Step 3: Start the Expo Development Server
 Using npm:
 
 ```
-npx expo start
+npx run android
 ```
 
 or using yarn:
 
 ```
-yarn start
+yarn run android
 ```
 
 Screenshots
@@ -56,35 +56,19 @@ Screenshots
 |-------------|-----------|
 | ![Light Mode](/assets/screenshots/Screenshot%202025-02-01%20at%2013.56.04.png) | ![Dark Mode](/assets/screenshots/Screenshot%202025-02-01%20at%2013.56.11.png) |
 
-Light Mode Dark Mode
-Usage
-Timer Management
-Create a Timer: Enter a name, duration, and category.
-Start/Pause Timer: Tap on a timer to start/pause it.
-Reset Timer: Reset timer to its original duration.
-Delete Timer: Remove a timer from the list.
-Export Timers
-Tap on "Export Timer Data" to save all timers as a JSON file.
-Category Filtering
-Select a category to view only specific timers.
-About Section
-Displays developer details (GitHub, Portfolio, Contact).
-Built With
-React Native & Expo
-Zustand (State Management)
-React Native Paper (Material UI)
-React Native Reanimated (Animations)
-AsyncStorage (Persistent Storage)
-Expo Router (Navigation)
-Contact
-Developer: Nitin Sirsath
-Email: nitinsirsath8855@gmail.com
-GitHub: github.com/nitinsirsath
-Portfolio: nitinsirsath.netlify.app
-
-License
-This project is for assignment purposes only and is not intended for commercial use.
-
 ```
 
 ```
+
+## Built With
+
+- React Native & Expo
+- Zustand (State Management)
+- React Native Paper (Material UI Components)
+- React Native Reanimated (Animations)
+- AsyncStorage (Persistent Storage)
+- Expo Router (Navigation)
+
+### Feedback?
+
+contact nitinsirsath8855@gmail.com
