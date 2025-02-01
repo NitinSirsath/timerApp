@@ -10,39 +10,20 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useTimerStore } from "@/store/useTimerStore";
-import uuid from "react-native-uuid";
+import useCreate from "@/hooks/timer/useCreate";
 
 export default function CreateTimerScreen() {
-  const [name, setName] = useState("");
-  const [duration, setDuration] = useState("");
-  const [category, setCategory] = useState("Workout"); // ✅ Default category
-  const [halfwayAlert, setHalfwayAlert] = useState(false); // ✅ Toggle state for halfway alert
-
-  const addTimer = useTimerStore((state) => state.addTimer);
-
-  const handleCreateTimer = () => {
-    if (!name || !duration || !category) {
-      Alert.alert("Error", "All fields are required.");
-      return;
-    }
-
-    addTimer({
-      id: uuid.v4() as string, // ✅ Use react-native-uuid
-      name,
-      duration: Number(duration),
-      remainingTime: Number(duration),
-      category,
-      status: "paused",
-      halfwayAlert, // ✅ New property: Store user preference
-      halfwayAlertTriggered: false, // ✅ Ensure it's reset on timer creation
-    });
-
-    setName("");
-    setDuration("");
-    setCategory("Workout"); // Reset to default
-    setHalfwayAlert(false); // Reset halfway alert switch
-    Alert.alert("Success", "Timer added!");
-  };
+  const {
+    setName,
+    duration,
+    name,
+    setDuration,
+    category,
+    setCategory,
+    halfwayAlert,
+    setHalfwayAlert,
+    handleCreateTimer,
+  } = useCreate();
 
   return (
     <View style={styles.container}>

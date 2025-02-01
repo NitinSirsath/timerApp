@@ -1,0 +1,135 @@
+import { useTimerStore } from "@/store/useTimerStore";
+import React, { useEffect, useState } from "react";
+
+const useIndex = () => {
+  const { timers, updateTimer, deleteTimer } = useTimerStore();
+  const [completedTimer, setCompletedTimer] = useState<{ name: string } | null>(
+    null
+  );
+  const { exportTimers } = useTimerStore();
+  const loadTimers = useTimerStore((state) => state.loadTimers);
+
+  useEffect(() => {
+    loadTimers(); // ✅ Load timers from AsyncStorage when the app starts
+  }, []);
+
+  const [intervals, setIntervals] = useState<{
+    [key: string]: NodeJS.Timeout | null;
+  }>({});
+  const [expandedCategories, setExpandedCategories] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  useEffect(() => {
+    return () => {
+      Object.values(intervals).forEach(
+        (interval) => interval && clearInterval(interval)
+      );
+    };
+  }, []);
+
+  const toggleCategory = (category: string) => {
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [category]: !prev[category],
+    }));
+  };
+
+  const startTimer = (id: string) => {
+    if (intervals[id]) return;
+
+    const interval = setInterval(() => {
+      const timer = useTimerStore.getState().timers.find((t) => t.id === id);
+      if (!timer) return;
+
+      if (timer.remainingTime > 1) {
+        // ✅ Trigger halfway alert if applicable
+        if (
+          timer.halfwayAlert &&
+          !timer.halfwayAlertTriggered &&
+          timer.remainingTime <= timer.duration / 2
+        ) {
+          useTimerStore
+            .getState()
+            .updateTimer(id, { halfwayAlertTriggered: true });
+          alert(`⏳ Halfway Alert: "${timer.name}" is at 50%!`);
+        }
+
+        useTimerStore.getState().updateTimer(id, {
+          remainingTime: timer.remainingTime - 1,
+          status: "running",
+        });
+      } else {
+        clearInterval(interval);
+        useTimerStore
+          .getState()
+          .updateTimer(id, { remainingTime: 0, status: "completed" });
+        setCompletedTimer({ name: timer.name });
+      }
+    }, 1000);
+
+    setIntervals((prev) => ({ ...prev, [id]: interval }));
+  };
+
+  const closeModal = () => {
+    setCompletedTimer(null);
+  };
+
+  const pauseTimer = (id: string) => {
+    clearInterval(intervals[id]!);
+    setIntervals((prev) => ({ ...prev, [id]: null }));
+    useTimerStore.getState().updateTimer(id, { status: "paused" });
+  };
+
+  const resetTimer = (id: string, originalDuration: number) => {
+    clearInterval(intervals[id]!);
+    setIntervals((prev) => ({ ...prev, [id]: null }));
+    useTimerStore.getState().updateTimer(id, {
+      remainingTime: originalDuration,
+      status: "paused",
+    });
+  };
+
+  // 🔹 Bulk Actions for a Category
+  const startAllTimersInCategory = (category: string) => {
+    timers
+      .filter((t) => t.category === category && t.status !== "running")
+      .forEach((timer) => startTimer(timer.id));
+  };
+
+  const pauseAllTimersInCategory = (category: string) => {
+    timers
+      .filter((t) => t.category === category && t.status === "running")
+      .forEach((timer) => pauseTimer(timer.id));
+  };
+
+  const resetAllTimersInCategory = (category: string) => {
+    timers
+      .filter((t) => t.category === category)
+      .forEach((timer) => resetTimer(timer.id, timer.duration));
+  };
+
+  // 🔹 Group timers by category
+  const groupedTimers = timers.reduce((acc, timer) => {
+    acc[timer.category] = [...(acc[timer.category] || []), timer];
+    return acc;
+  }, {} as Record<string, typeof timers>);
+  return {
+    exportTimers,
+    timers,
+    completedTimer,
+    closeModal,
+    groupedTimers,
+    toggleCategory,
+    expandedCategories,
+    startAllTimersInCategory,
+    pauseAllTimersInCategory,
+    resetAllTimersInCategory,
+    startTimer,
+    pauseTimer,
+    resetTimer,
+    deleteTimer,
+  };
+};
+
+export default useIndex;
