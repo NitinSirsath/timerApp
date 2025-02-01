@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet, SafeAreaView } from "react-native";
 import { useTimerStore } from "@/store/useTimerStore";
 import { useTheme } from "@react-navigation/native";
 import { Text, Card, Chip, SegmentedButtons } from "react-native-paper";
-import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated"; // ✅ Import animation functions
+import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
 
 export default function TimerHistoryScreen() {
   const { timers } = useTimerStore();
@@ -27,13 +27,12 @@ export default function TimerHistoryScreen() {
     >
       <Animated.View
         style={[styles.container, { backgroundColor: colors.background }]}
-        entering={FadeIn.duration(300)} // ✅ Animate when screen loads
+        entering={FadeIn.duration(300)}
       >
         <Text style={[styles.header, { color: colors.text }]}>
           Completed Timers
         </Text>
 
-        {/* ✅ Category Filter with Animation */}
         <Animated.View entering={FadeIn.duration(300)}>
           <SegmentedButtons
             value={selectedCategory}
@@ -46,13 +45,12 @@ export default function TimerHistoryScreen() {
           />
         </Animated.View>
 
-        {/* ✅ Timer List */}
         <FlatList
           data={filteredTimers}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Animated.View
-              layout={Layout.springify()} // ✅ Spring animation when filtering
+              layout={Layout.springify()}
               entering={FadeIn.duration(400)}
               exiting={FadeOut.duration(300)}
             >
@@ -116,7 +114,7 @@ const styles = StyleSheet.create({
   historyItem: {
     marginBottom: 10,
     borderRadius: 10,
-    elevation: 3, // ✅ Adds elevation for depth effect
+    elevation: 3,
   },
 
   timerName: { fontSize: 18, fontWeight: "bold", marginBottom: 5 },
@@ -133,7 +131,7 @@ const styles = StyleSheet.create({
   },
 
   completedChip: {
-    backgroundColor: "#4CAF50", // ✅ Green for completed status
+    backgroundColor: "#4CAF50",
   },
 
   emptyText: {
