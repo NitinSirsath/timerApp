@@ -1,16 +1,17 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons"; // ✅ Using FontAwesome
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 
+// Function to display TabBar Icons using FontAwesome
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof MaterialIcons>["name"];
+  name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
-  return <MaterialIcons size={26} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={24} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -23,25 +24,30 @@ export default function TabLayout() {
         headerShown: useClientOnlyValue(false, true),
       }}
     >
+      {/* Home / Timer List Screen */}
       <Tabs.Screen
         name="index"
         options={{
           title: "Timers",
-          tabBarIcon: ({ color }) => <TabBarIcon name="timer" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="clock-o" color={color} />
+          ),
           headerRight: () => <ThemeToggle />,
         }}
       />
 
+      {/* Create Timer Screen */}
       <Tabs.Screen
         name="create"
         options={{
           title: "Create",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="add-circle-outline" color={color} />
+            <TabBarIcon name="plus-circle" color={color} />
           ),
         }}
       />
 
+      {/* Timer History Screen */}
       <Tabs.Screen
         name="history"
         options={{
@@ -51,11 +57,15 @@ export default function TabLayout() {
           ),
         }}
       />
+
+      {/* About Me Screen */}
       <Tabs.Screen
         name="about"
         options={{
           title: "About Me",
-          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="user-circle" color={color} />
+          ),
         }}
       />
     </Tabs>
