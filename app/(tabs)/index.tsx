@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import useIndex from "@/hooks/timer/useIndex";
 import { useTheme } from "@react-navigation/native";
 import FeedbackDialog from "@/components/timer/timerList/FeedbackDialog";
 import CategoryPicker from "@/components/timer/timerList/CategoryPicker";
 import FlatlistTimer from "@/components/timer/timerList/FlatlistTimer";
+import { Button } from "react-native-paper";
 
 export default function TimerListScreen() {
   const {
@@ -34,7 +35,9 @@ export default function TimerListScreen() {
         <Text style={[{ color: colors.text }]}>No timers available</Text>
       )}
 
-      <Button title="Export Timer Data" onPress={exportTimers} />
+      <Button mode={"contained"} onPress={exportTimers}>
+        Export Timer Data
+      </Button>
 
       <FeedbackDialog completedTimer={completedTimer} closeModal={closeModal} />
 
