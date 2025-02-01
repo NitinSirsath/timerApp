@@ -61,9 +61,6 @@ export default function TimerListScreen() {
       </Modal>
 
       <View style={styles.filterContainer}>
-        <Text style={[styles.filterLabel, { color: colors.text }]}>
-          Filter by Category:
-        </Text>
         <Picker
           selectedValue={selectedCategory}
           onValueChange={(itemValue) => setSelectedCategory(itemValue)}
