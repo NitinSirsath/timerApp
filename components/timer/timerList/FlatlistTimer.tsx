@@ -1,16 +1,10 @@
 import { Timer } from "@/store/useTimerStore";
 import { useTheme } from "@react-navigation/native";
 import React from "react";
-import {
-  Button,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 import { Bar as ProgressBar } from "react-native-progress";
-import { MaterialIcons } from "@expo/vector-icons"; // ✅ Import MaterialIcons
+import { MaterialIcons } from "@expo/vector-icons";
+import { Card, IconButton, Button, Divider } from "react-native-paper"; // ✅ Material UI components
 
 interface IProps {
   groupedTimers: Record<string, Timer[]>;
@@ -46,23 +40,32 @@ const FlatlistTimer = ({
       renderItem={({ item: category }) => (
         <View style={styles.categoryContainer}>
           {/* Expand/Collapse Header */}
-          <TouchableOpacity
-            onPress={() => toggleCategory(category)}
+          <Card
             style={[styles.categoryHeader, { backgroundColor: colors.card }]}
+            mode="elevated"
           >
-            <Text style={[styles.categoryTitle, { color: colors.text }]}>
-              {category} ({groupedTimers[category].length})
-            </Text>
-            <MaterialIcons
-              name={
-                expandedCategories[category]
-                  ? "keyboard-arrow-up"
-                  : "keyboard-arrow-down"
-              } // ✅ Proper Arrow Icons
-              size={24}
-              color={colors.text}
+            <Card.Title
+              title={`${category} (${groupedTimers[category].length})`}
+              titleStyle={[styles.categoryTitle, { color: colors.text }]}
+              right={(props) => (
+                <IconButton
+                  {...props}
+                  icon={() => (
+                    <MaterialIcons
+                      name={
+                        expandedCategories[category]
+                          ? "keyboard-arrow-up"
+                          : "keyboard-arrow-down"
+                      }
+                      size={24}
+                      color={colors.text}
+                    />
+                  )}
+                  onPress={() => toggleCategory(category)}
+                />
+              )}
             />
-          </TouchableOpacity>
+          </Card>
 
           {/* Bulk Actions for Category */}
           {expandedCategories[category] && (
@@ -70,17 +73,23 @@ const FlatlistTimer = ({
               style={[styles.bulkActions, { backgroundColor: colors.card }]}
             >
               <Button
-                title="Start All"
+                mode="contained"
                 onPress={() => startAllTimersInCategory(category)}
-              />
+              >
+                Start All
+              </Button>
               <Button
-                title="Pause All"
+                mode="contained"
                 onPress={() => pauseAllTimersInCategory(category)}
-              />
+              >
+                Pause All
+              </Button>
               <Button
-                title="Reset All"
+                mode="contained"
                 onPress={() => resetAllTimersInCategory(category)}
-              />
+              >
+                Reset All
+              </Button>
             </View>
           )}
 
@@ -90,46 +99,64 @@ const FlatlistTimer = ({
               data={groupedTimers[category]}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
-                <View
+                <Card
                   style={[styles.timerCard, { backgroundColor: colors.card }]}
+                  mode="elevated"
                 >
-                  <Text style={[styles.timerName, { color: colors.text }]}>
-                    {item.name}
-                  </Text>
-                  {item.remainingTime > 0 && (
-                    <ProgressBar
-                      progress={item.remainingTime / item.duration}
-                      width={200}
-                      color={colors.primary}
-                    />
-                  )}
-                  <Text style={{ color: colors.text }}>
-                    {item.remainingTime} sec remaining
-                  </Text>
-                  <View style={styles.buttonGroup}>
+                  <Card.Content>
+                    <Text style={[styles.timerName, { color: colors.text }]}>
+                      {item.name}
+                    </Text>
+                    {item.remainingTime > 0 && (
+                      <ProgressBar
+                        progress={item.remainingTime / item.duration}
+                        width={null}
+                        color={colors.primary}
+                      />
+                    )}
+                    <Text style={{ color: colors.text }}>
+                      {item.remainingTime} sec remaining
+                    </Text>
+                  </Card.Content>
+
+                  <Divider />
+
+                  <Card.Actions>
                     {item.status === "paused" && (
                       <Button
-                        title="Start"
+                        icon="play-circle"
+                        mode="text"
                         onPress={() => startTimer(item.id)}
-                      />
+                      >
+                        Start
+                      </Button>
                     )}
                     {item.status === "running" && (
                       <Button
-                        title="Pause"
+                        icon="pause-circle"
+                        mode="text"
                         onPress={() => pauseTimer(item.id)}
-                      />
+                      >
+                        Pause
+                      </Button>
                     )}
                     <Button
-                      title="Reset"
+                      icon="restore"
+                      mode="text"
                       onPress={() => resetTimer(item.id, item.duration)}
-                    />
+                    >
+                      Reset
+                    </Button>
                     <Button
-                      title="Delete"
+                      icon="delete"
+                      mode="text"
                       onPress={() => deleteTimer(item.id)}
                       color="red"
-                    />
-                  </View>
-                </View>
+                    >
+                      Delete
+                    </Button>
+                  </Card.Actions>
+                </Card>
               )}
             />
           )}
@@ -143,33 +170,27 @@ export default FlatlistTimer;
 
 const styles = StyleSheet.create({
   categoryHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     marginBottom: 5,
   },
 
   categoryTitle: { fontSize: 18, fontWeight: "bold" },
 
   categoryContainer: { marginBottom: 10 },
+
   bulkActions: {
-    padding: 10,
     flexDirection: "row",
     justifyContent: "space-evenly",
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 10,
     marginBottom: 5,
   },
 
   timerCard: {
-    padding: 15,
-    borderBottomWidth: 1,
+    marginVertical: 6,
+    borderRadius: 10,
   },
 
   timerName: { fontSize: 16, fontWeight: "bold" },
-
-  buttonGroup: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
 });
