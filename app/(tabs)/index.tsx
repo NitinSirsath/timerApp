@@ -12,6 +12,7 @@ import Modal from "react-native-modal";
 import useIndex from "@/hooks/timer/useIndex";
 import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@react-navigation/native"; // ✅ Import theme hook
+import FeedbackDialog from "@/components/timer/timerList/FeedbackDialog";
 
 export default function TimerListScreen() {
   const {
@@ -33,7 +34,7 @@ export default function TimerListScreen() {
     setSelectedCategory,
   } = useIndex();
 
-  const { colors } = useTheme(); // ✅ Get theme-based colors
+  const { colors } = useTheme();
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -43,22 +44,7 @@ export default function TimerListScreen() {
 
       <Button title="Export Timer Data" onPress={exportTimers} />
 
-      <Modal
-        isVisible={!!completedTimer}
-        onBackdropPress={closeModal}
-        animationIn="zoomIn"
-        animationOut="zoomOut"
-      >
-        <View style={[styles.modalContainer, { backgroundColor: colors.card }]}>
-          <Text style={[styles.modalTitle, { color: colors.text }]}>
-            🎉 Timer Completed!
-          </Text>
-          <Text style={[styles.modalText, { color: colors.text }]}>
-            Great job! Your timer **{completedTimer?.name}** has completed.
-          </Text>
-          <Button title="OK" onPress={closeModal} />
-        </View>
-      </Modal>
+      <FeedbackDialog completedTimer={completedTimer} closeModal={closeModal} />
 
       <View style={styles.filterContainer}>
         <Picker
