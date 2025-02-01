@@ -19,7 +19,7 @@ export default function CreateTimerScreen() {
     handleCreateTimer,
   } = useCreate();
 
-  const { colors, dark } = useTheme(); // ✅ Get theme-based colors and dark mode flag
+  const { colors, dark } = useTheme();
 
   return (
     <Animated.View
@@ -32,7 +32,6 @@ export default function CreateTimerScreen() {
           style={[styles.card, { backgroundColor: colors.card }]}
         >
           <Card.Content>
-            {/* ✅ Timer Name */}
             <TextInput
               label="Timer Name"
               mode="outlined"
@@ -51,7 +50,6 @@ export default function CreateTimerScreen() {
               textColor={colors.text}
             />
 
-            {/* ✅ Duration Input */}
             <TextInput
               label="Duration (seconds)"
               mode="outlined"
@@ -71,7 +69,6 @@ export default function CreateTimerScreen() {
               textColor={colors.text}
             />
 
-            {/* ✅ Category Picker */}
             <Text style={[styles.label, { color: colors.text }]}>Category</Text>
             <View
               style={[
@@ -98,7 +95,6 @@ export default function CreateTimerScreen() {
               </Picker>
             </View>
 
-            {/* ✅ Halfway Alert Toggle */}
             <View style={styles.switchContainer}>
               <Text style={[styles.label, { color: colors.text }]}>
                 Enable Halfway Alert
@@ -106,7 +102,6 @@ export default function CreateTimerScreen() {
               <Switch value={halfwayAlert} onValueChange={setHalfwayAlert} />
             </View>
 
-            {/* ✅ Create Timer Button */}
             <Button
               mode="contained"
               onPress={handleCreateTimer}
