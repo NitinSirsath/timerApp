@@ -1,20 +1,18 @@
 import { useTimerStore } from "@/store/useTimerStore";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const useIndex = () => {
-  const { timers, updateTimer, deleteTimer } = useTimerStore();
+  const { timers, deleteTimer } = useTimerStore();
   const [completedTimer, setCompletedTimer] = useState<{ name: string } | null>(
     null
   );
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // ✅ Category Filter State
-
-  // 🔹 Filter timers based on selected category
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const { exportTimers } = useTimerStore();
   const loadTimers = useTimerStore((state) => state.loadTimers);
 
   useEffect(() => {
-    loadTimers(); // ✅ Load timers from AsyncStorage when the app starts
+    loadTimers();
   }, []);
 
   const [intervals, setIntervals] = useState<{
@@ -47,7 +45,6 @@ const useIndex = () => {
       if (!timer) return;
 
       if (timer.remainingTime > 1) {
-        // ✅ Trigger halfway alert if applicable
         if (
           timer.halfwayAlert &&
           !timer.halfwayAlertTriggered &&
@@ -94,7 +91,6 @@ const useIndex = () => {
     });
   };
 
-  // 🔹 Bulk Actions for a Category
   const startAllTimersInCategory = (category: string) => {
     timers
       .filter((t) => t.category === category && t.status !== "running")
@@ -113,7 +109,6 @@ const useIndex = () => {
       .forEach((timer) => resetTimer(timer.id, timer.duration));
   };
 
-  // 🔹 Group timers by category
   const groupedTimers = timers.reduce((acc, timer) => {
     acc[timer.category] = [...(acc[timer.category] || []), timer];
     return acc;
