@@ -27,7 +27,7 @@ const FeedbackDialog = ({ completedTimer, closeModal }: IProps) => {
           Great job! Your timer {completedTimer?.name} has completed.
         </Text>
         <Button mode="contained" onPress={closeModal}>
-          title="OK"
+          Close
         </Button>
       </View>
     </Modal>
