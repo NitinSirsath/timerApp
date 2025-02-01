@@ -10,6 +10,7 @@ import {
 import { Bar as ProgressBar } from "react-native-progress";
 import Modal from "react-native-modal";
 import useIndex from "@/hooks/timer/useIndex";
+import ThemeToggle from "@/components/theme/ThemeToggle";
 
 export default function TimerListScreen() {
   const {
