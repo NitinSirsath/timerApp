@@ -23,32 +23,28 @@ Follow these steps to install and run the app:
 ```sh
 git clone https://github.com/nitinsirsath/timer-app.git
 cd timer-app
+```
 Step 2: Install Dependencies
 Using npm:
-
-sh
-Copy
-Edit
+```
 npm install
+```
 or using yarn:
 
-sh
-Copy
-Edit
+```
 yarn install
+```
 Step 3: Start the Expo Development Server
 Using npm:
 
-sh
-Copy
-Edit
+```
 npx expo start
+```
 or using yarn:
 
-sh
-Copy
-Edit
+```
 yarn start
+```
 Screenshots
 Add screenshots in the screenshots/ folder and reference them below.
 
