@@ -1,7 +1,6 @@
-import { Text, View } from "@/components/Themed";
 import { useTheme } from "@react-navigation/native";
 import React from "react";
-import { Button, StyleSheet } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import Modal from "react-native-modal";
 
 interface IProps {

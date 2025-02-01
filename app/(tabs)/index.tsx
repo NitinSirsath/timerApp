@@ -13,6 +13,7 @@ import useIndex from "@/hooks/timer/useIndex";
 import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@react-navigation/native"; // ✅ Import theme hook
 import FeedbackDialog from "@/components/timer/timerList/FeedbackDialog";
+import CategoryPicker from "@/components/timer/timerList/CategoryPicker";
 
 export default function TimerListScreen() {
   const {
@@ -46,18 +47,11 @@ export default function TimerListScreen() {
 
       <FeedbackDialog completedTimer={completedTimer} closeModal={closeModal} />
 
-      <View style={styles.filterContainer}>
-        <Picker
-          selectedValue={selectedCategory}
-          onValueChange={(itemValue) => setSelectedCategory(itemValue)}
-          style={[styles.picker, { color: colors.text }]}
-        >
-          <Picker.Item label="All Categories" value={null} />
-          {Object.keys(groupedTimers).map((category) => (
-            <Picker.Item key={category} label={category} value={category} />
-          ))}
-        </Picker>
-      </View>
+      <CategoryPicker
+        groupedTimers={groupedTimers}
+        setSelectedCategory={setSelectedCategory}
+        selectedCategory={selectedCategory}
+      />
 
       <FlatList
         data={Object.keys(groupedTimers)}
@@ -183,17 +177,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 10,
   },
-
-  modalContainer: {
-    padding: 20,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-
-  modalTitle: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
-  modalText: { fontSize: 16, textAlign: "center", marginBottom: 10 },
-
-  filterContainer: { marginBottom: 15 },
-  filterLabel: { fontSize: 16, marginBottom: 5 },
-  picker: { height: 60 },
 });
