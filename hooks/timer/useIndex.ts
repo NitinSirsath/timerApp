@@ -56,7 +56,7 @@ const useIndex = () => {
           useTimerStore
             .getState()
             .updateTimer(id, { halfwayAlertTriggered: true });
-          alert(`⏳ Halfway Alert: "${timer.name}" is at 50%!`);
+          alert(`Halfway Alert: "${timer.name}" is at 50%!`);
         }
 
         useTimerStore.getState().updateTimer(id, {
