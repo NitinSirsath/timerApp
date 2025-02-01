@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import { Bar as ProgressBar } from "react-native-progress";
+import { MaterialIcons } from "@expo/vector-icons"; // ✅ Import MaterialIcons
 
 interface IProps {
   groupedTimers: Record<string, Timer[]>;
@@ -52,14 +53,22 @@ const FlatlistTimer = ({
             <Text style={[styles.categoryTitle, { color: colors.text }]}>
               {category} ({groupedTimers[category].length})
             </Text>
-            <Text style={{ color: colors.text }}>
-              {expandedCategories[category] ? "▲" : "▼"}
-            </Text>
+            <MaterialIcons
+              name={
+                expandedCategories[category]
+                  ? "keyboard-arrow-up"
+                  : "keyboard-arrow-down"
+              } // ✅ Proper Arrow Icons
+              size={24}
+              color={colors.text}
+            />
           </TouchableOpacity>
 
           {/* Bulk Actions for Category */}
           {expandedCategories[category] && (
-            <View style={styles.bulkActions}>
+            <View
+              style={[styles.bulkActions, { backgroundColor: colors.card }]}
+            >
               <Button
                 title="Start All"
                 onPress={() => startAllTimersInCategory(category)}
@@ -145,6 +154,7 @@ const styles = StyleSheet.create({
 
   categoryContainer: { marginBottom: 10 },
   bulkActions: {
+    padding: 10,
     flexDirection: "row",
     justifyContent: "space-evenly",
     marginBottom: 5,

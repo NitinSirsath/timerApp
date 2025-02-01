@@ -1,21 +1,20 @@
-import { View, Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 import { useThemeStore } from "@/store/useThemeStore";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { MaterialIcons } from "@expo/vector-icons"; // ✅ Import Material Icons
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useThemeStore();
+  const isDarkMode = theme === "dark";
 
   return (
     <Pressable onPress={toggleTheme} style={styles.container}>
-      <Text
-        style={[styles.text, { color: theme === "dark" ? "#FFF" : "#333" }]}
-      >
-        {theme === "light" ? "Light mode" : "Dark mode"}
+      <Text style={[styles.text, { color: isDarkMode ? "#FFF" : "#333" }]}>
+        {isDarkMode ? "Dark mode" : "Light mode"}
       </Text>
-      <FontAwesome
-        name={theme === "dark" ? "moon-o" : "sun-o"}
+      <MaterialIcons
+        name={isDarkMode ? "dark-mode" : "light-mode"} // ✅ Material Icons for better UI
         size={24}
-        color={theme === "dark" ? "#FFD700" : "#333"}
+        color={isDarkMode ? "#FFD700" : "#333"}
       />
     </Pressable>
   );
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     borderRadius: 10, // ✅ Slightly rounded edges for better UI
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
   },
 });
