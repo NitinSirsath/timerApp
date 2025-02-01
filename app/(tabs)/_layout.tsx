@@ -1,12 +1,12 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import { FontAwesome } from "@expo/vector-icons"; // ✅ Using FontAwesome
+import { FontAwesome } from "@expo/vector-icons"; 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 
-// Function to display TabBar Icons using FontAwesome
+
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
@@ -24,7 +24,7 @@ export default function TabLayout() {
         headerShown: useClientOnlyValue(false, true),
       }}
     >
-      {/* Home / Timer List Screen */}
+
       <Tabs.Screen
         name="index"
         options={{
@@ -36,7 +36,7 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Create Timer Screen */}
+  
       <Tabs.Screen
         name="create"
         options={{
@@ -47,7 +47,7 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Timer History Screen */}
+    
       <Tabs.Screen
         name="history"
         options={{
@@ -58,7 +58,7 @@ export default function TabLayout() {
         }}
       />
 
-      {/* About Me Screen */}
+ 
       <Tabs.Screen
         name="about"
         options={{
