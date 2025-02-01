@@ -21,10 +21,10 @@ const FeedbackDialog = ({ completedTimer, closeModal }: IProps) => {
     >
       <View style={[styles.modalContainer, { backgroundColor: colors.card }]}>
         <Text style={[styles.modalTitle, { color: colors.text }]}>
-          🎉 Timer Completed!
+          Timer Completed!
         </Text>
         <Text style={[styles.modalText, { color: colors.text }]}>
-          Great job! Your timer **{completedTimer?.name}** has completed.
+          Great job! Your timer {completedTimer?.name} has completed.
         </Text>
         <Button mode="contained" onPress={closeModal}>
           title="OK"

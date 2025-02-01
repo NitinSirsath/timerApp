@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import useIndex from "@/hooks/timer/useIndex";
 import { useTheme } from "@react-navigation/native";
 import FeedbackDialog from "@/components/timer/timerList/FeedbackDialog";
@@ -37,70 +37,92 @@ export default function TimerListScreen() {
   const { colors } = useTheme();
 
   return (
-    <Animated.View
-      style={[styles.container, { backgroundColor: colors.background }]}
-      entering={FadeIn.duration(300)}
+    <SafeAreaView
+      style={[styles.safeContainer, { backgroundColor: colors.background }]}
     >
-      {timers.length === 0 && (
-        <Animated.Text
-          style={[{ color: colors.text }]}
-          entering={FadeIn.duration(500)}
-          exiting={FadeOut.duration(300)}
-        >
-          No timers available
-        </Animated.Text>
-      )}
-
-      {/* Animated Export Button */}
       <Animated.View
-        entering={ZoomIn.duration(200)}
-        exiting={ZoomOut.duration(200)}
+        style={styles.content}
+        entering={FadeIn.duration(300)}
+        layout={Layout.springify()}
       >
-        <Button
-          mode={"contained"}
-          onPress={exportTimers}
-          style={styles.animatedButton}
+        {timers.length === 0 && (
+          <Animated.Text
+            style={[styles.noTimersText, { color: colors.text }]}
+            entering={FadeIn.duration(500)}
+            exiting={FadeOut.duration(300)}
+          >
+            No timers available
+          </Animated.Text>
+        )}
+
+        <Animated.View
+          entering={ZoomIn.duration(200)}
+          exiting={ZoomOut.duration(200)}
         >
-          Export Timer Data
-        </Button>
-      </Animated.View>
+          <Button
+            mode={"contained"}
+            onPress={exportTimers}
+            style={styles.animatedButton}
+          >
+            Export Timer Data
+          </Button>
+        </Animated.View>
 
-      {/* Animated Feedback Dialog */}
-      <FeedbackDialog completedTimer={completedTimer} closeModal={closeModal} />
-
-      {/* Animated Category Picker */}
-      <Animated.View entering={FadeIn.duration(300).delay(200)}>
-        <CategoryPicker
-          groupedTimers={groupedTimers}
-          setSelectedCategory={setSelectedCategory}
-          selectedCategory={selectedCategory}
+        <FeedbackDialog
+          completedTimer={completedTimer}
+          closeModal={closeModal}
         />
-      </Animated.View>
 
-      {/* Animated Timer List */}
-      <Animated.View layout={Layout.springify()}>
-        <FlatlistTimer
-          groupedTimers={groupedTimers}
-          toggleCategory={toggleCategory}
-          expandedCategories={expandedCategories}
-          startAllTimersInCategory={startAllTimersInCategory}
-          pauseAllTimersInCategory={pauseAllTimersInCategory}
-          resetAllTimersInCategory={resetAllTimersInCategory}
-          startTimer={startTimer}
-          pauseTimer={pauseTimer}
-          resetTimer={resetTimer}
-          deleteTimer={deleteTimer}
-        />
+        <Animated.View entering={FadeIn.duration(300).delay(200)}>
+          <CategoryPicker
+            groupedTimers={groupedTimers}
+            setSelectedCategory={setSelectedCategory}
+            selectedCategory={selectedCategory}
+          />
+        </Animated.View>
+
+        <Animated.View layout={Layout.springify()} style={styles.timerList}>
+          <FlatlistTimer
+            groupedTimers={groupedTimers}
+            toggleCategory={toggleCategory}
+            expandedCategories={expandedCategories}
+            startAllTimersInCategory={startAllTimersInCategory}
+            pauseAllTimersInCategory={pauseAllTimersInCategory}
+            resetAllTimersInCategory={resetAllTimersInCategory}
+            startTimer={startTimer}
+            pauseTimer={pauseTimer}
+            resetTimer={resetTimer}
+            deleteTimer={deleteTimer}
+          />
+        </Animated.View>
       </Animated.View>
-    </Animated.View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
+  safeContainer: {
+    flex: 1,
+    paddingBottom: 20,
+  },
+
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+
+  noTimersText: {
+    textAlign: "center",
+    fontSize: 16,
+    marginTop: 10,
+  },
 
   animatedButton: {
     marginVertical: 10,
     alignSelf: "center",
+  },
+
+  timerList: {
+    flex: 1,
   },
 });

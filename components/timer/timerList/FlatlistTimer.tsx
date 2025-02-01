@@ -131,7 +131,9 @@ const FlatlistTimer = ({
                           color={colors.primary}
                         />
                       )}
-                      <Text style={{ color: colors.text }}>
+                      <Text
+                        style={[styles.timerDuration, { color: colors.text }]}
+                      >
                         {item.remainingTime} sec remaining
                       </Text>
                     </Card.Content>
@@ -209,5 +211,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 
-  timerName: { fontSize: 16, fontWeight: "bold" },
+  timerName: { fontSize: 16, fontWeight: "bold", paddingVertical: 10 },
+  timerDuration: { fontSize: 16, paddingVertical: 10 },
 });
