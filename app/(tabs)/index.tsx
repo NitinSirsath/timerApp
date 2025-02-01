@@ -10,7 +10,7 @@ import {
 import { Bar as ProgressBar } from "react-native-progress";
 import Modal from "react-native-modal";
 import useIndex from "@/hooks/timer/useIndex";
-import { useThemeStore } from "@/store/useThemeStore";
+import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "@react-navigation/native"; // ✅ Import theme hook
 
 export default function TimerListScreen() {
@@ -29,6 +29,8 @@ export default function TimerListScreen() {
     pauseTimer,
     resetTimer,
     deleteTimer,
+    selectedCategory,
+    setSelectedCategory,
   } = useIndex();
 
   const { colors } = useTheme(); // ✅ Get theme-based colors
@@ -57,6 +59,22 @@ export default function TimerListScreen() {
           <Button title="OK" onPress={closeModal} />
         </View>
       </Modal>
+
+      <View style={styles.filterContainer}>
+        <Text style={[styles.filterLabel, { color: colors.text }]}>
+          Filter by Category:
+        </Text>
+        <Picker
+          selectedValue={selectedCategory}
+          onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+          style={[styles.picker, { color: colors.text }]}
+        >
+          <Picker.Item label="All Categories" value={null} />
+          {Object.keys(groupedTimers).map((category) => (
+            <Picker.Item key={category} label={category} value={category} />
+          ))}
+        </Picker>
+      </View>
 
       <FlatList
         data={Object.keys(groupedTimers)}
@@ -191,4 +209,8 @@ const styles = StyleSheet.create({
 
   modalTitle: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
   modalText: { fontSize: 16, textAlign: "center", marginBottom: 10 },
+
+  filterContainer: { marginBottom: 15 },
+  filterLabel: { fontSize: 16, marginBottom: 5 },
+  picker: { height: 60 },
 });

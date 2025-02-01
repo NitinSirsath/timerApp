@@ -6,6 +6,10 @@ const useIndex = () => {
   const [completedTimer, setCompletedTimer] = useState<{ name: string } | null>(
     null
   );
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // ✅ Category Filter State
+
+  // 🔹 Filter timers based on selected category
+
   const { exportTimers } = useTimerStore();
   const loadTimers = useTimerStore((state) => state.loadTimers);
 
@@ -114,12 +118,16 @@ const useIndex = () => {
     acc[timer.category] = [...(acc[timer.category] || []), timer];
     return acc;
   }, {} as Record<string, typeof timers>);
+
+  const filteredGroupedTimers = selectedCategory
+    ? { [selectedCategory]: groupedTimers[selectedCategory] || [] }
+    : groupedTimers;
   return {
     exportTimers,
     timers,
     completedTimer,
     closeModal,
-    groupedTimers,
+    // groupedTimers,
     toggleCategory,
     expandedCategories,
     startAllTimersInCategory,
@@ -129,6 +137,9 @@ const useIndex = () => {
     pauseTimer,
     resetTimer,
     deleteTimer,
+    selectedCategory,
+    setSelectedCategory,
+    groupedTimers: filteredGroupedTimers,
   };
 };
 
