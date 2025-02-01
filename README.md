@@ -24,31 +24,39 @@ Follow these steps to install and run the app:
 git clone https://github.com/nitinsirsath/timer-app.git
 cd timer-app
 ```
+
 Step 2: Install Dependencies
 Using npm:
+
 ```
 npm install
 ```
+
 or using yarn:
 
 ```
 yarn install
 ```
+
 Step 3: Start the Expo Development Server
 Using npm:
 
 ```
 npx expo start
 ```
+
 or using yarn:
 
 ```
 yarn start
 ```
-Screenshots
-Add screenshots in the screenshots/ folder and reference them below.
 
-Light Mode	Dark Mode
+Screenshots
+| Light Mode | Dark Mode |
+|-------------|-----------|
+| ![Light Mode](/assets/screenshots/Screenshot%202025-02-01%20at%2013.56.04.png) | ![Dark Mode](/assets/screenshots/Screenshot%202025-02-01%20at%2013.56.11.png) |
+
+Light Mode Dark Mode
 Usage
 Timer Management
 Create a Timer: Enter a name, duration, and category.
@@ -76,4 +84,7 @@ Portfolio: nitinsirsath.netlify.app
 
 License
 This project is for assignment purposes only and is not intended for commercial use.
+
+```
+
 ```
