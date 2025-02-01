@@ -1,18 +1,16 @@
 import React from "react";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
-import { Pressable } from "react-native";
+import { Tabs } from "expo-router";
+import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 
-// Function to display TabBar Icons
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
+  name: React.ComponentProps<typeof MaterialIcons>["name"];
   color: string;
 }) {
-  return <FontAwesome size={24} style={{ marginBottom: -3 }} {...props} />;
+  return <MaterialIcons size={26} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -25,30 +23,25 @@ export default function TabLayout() {
         headerShown: useClientOnlyValue(false, true),
       }}
     >
-      {/* Home / Timer List Screen */}
       <Tabs.Screen
         name="index"
         options={{
           title: "Timers",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="clock-o" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="timer" color={color} />,
           headerRight: () => <ThemeToggle />,
         }}
       />
 
-      {/* Create Timer Screen */}
       <Tabs.Screen
         name="create"
         options={{
           title: "Create",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="plus-circle" color={color} />
+            <TabBarIcon name="add-circle-outline" color={color} />
           ),
         }}
       />
 
-      {/* Timer History Screen */}
       <Tabs.Screen
         name="history"
         options={{
