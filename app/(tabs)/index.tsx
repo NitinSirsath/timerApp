@@ -11,6 +11,7 @@ import { Bar as ProgressBar } from "react-native-progress";
 import Modal from "react-native-modal";
 import useIndex from "@/hooks/timer/useIndex";
 import { useThemeStore } from "@/store/useThemeStore";
+import { useTheme } from "@react-navigation/native"; // ✅ Import theme hook
 
 export default function TimerListScreen() {
   const {
@@ -30,15 +31,12 @@ export default function TimerListScreen() {
     deleteTimer,
   } = useIndex();
 
-  const theme = useThemeStore((state) => state.theme); // ✅ Get theme
-  const isDarkMode = theme === "dark";
+  const { colors } = useTheme(); // ✅ Get theme-based colors
 
   return (
-    <View style={[styles.container, isDarkMode && styles.darkContainer]}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       {timers.length === 0 && (
-        <Text style={[styles.text, isDarkMode && styles.darkText]}>
-          No timers available
-        </Text>
+        <Text style={[{ color: colors.text }]}>No timers available</Text>
       )}
 
       <Button title="Export Timer Data" onPress={exportTimers} />
@@ -49,11 +47,11 @@ export default function TimerListScreen() {
         animationIn="zoomIn"
         animationOut="zoomOut"
       >
-        <View style={[styles.modalContainer, isDarkMode && styles.darkModal]}>
-          <Text style={[styles.modalTitle, isDarkMode && styles.darkText]}>
+        <View style={[styles.modalContainer, { backgroundColor: colors.card }]}>
+          <Text style={[styles.modalTitle, { color: colors.text }]}>
             🎉 Timer Completed!
           </Text>
-          <Text style={[styles.modalText, isDarkMode && styles.darkText]}>
+          <Text style={[styles.modalText, { color: colors.text }]}>
             Great job! Your timer **{completedTimer?.name}** has completed.
           </Text>
           <Button title="OK" onPress={closeModal} />
@@ -68,14 +66,12 @@ export default function TimerListScreen() {
             {/* Expand/Collapse Header */}
             <TouchableOpacity
               onPress={() => toggleCategory(category)}
-              style={[styles.categoryHeader, isDarkMode && styles.darkCategory]}
+              style={[styles.categoryHeader, { backgroundColor: colors.card }]}
             >
-              <Text
-                style={[styles.categoryTitle, isDarkMode && styles.darkText]}
-              >
+              <Text style={[styles.categoryTitle, { color: colors.text }]}>
                 {category} ({groupedTimers[category].length})
               </Text>
-              <Text style={isDarkMode ? styles.darkText : styles.text}>
+              <Text style={{ color: colors.text }}>
                 {expandedCategories[category] ? "▲" : "▼"}
               </Text>
             </TouchableOpacity>
@@ -105,21 +101,19 @@ export default function TimerListScreen() {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                   <View
-                    style={[styles.timerCard, isDarkMode && styles.darkCard]}
+                    style={[styles.timerCard, { backgroundColor: colors.card }]}
                   >
-                    <Text
-                      style={[styles.timerName, isDarkMode && styles.darkText]}
-                    >
+                    <Text style={[styles.timerName, { color: colors.text }]}>
                       {item.name}
                     </Text>
                     {item.remainingTime > 0 && (
                       <ProgressBar
                         progress={item.remainingTime / item.duration}
                         width={200}
-                        color={isDarkMode ? "#FFD700" : "blue"}
+                        color={colors.primary}
                       />
                     )}
-                    <Text style={isDarkMode ? styles.darkText : styles.text}>
+                    <Text style={{ color: colors.text }}>
                       {item.remainingTime} sec remaining
                     </Text>
                     <View style={styles.buttonGroup}>
@@ -157,23 +151,18 @@ export default function TimerListScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#FFF" },
-  darkContainer: { backgroundColor: "#121212" }, // ✅ Dark mode background
+  container: { flex: 1, padding: 20 },
 
   categoryContainer: { marginBottom: 10 },
   categoryHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 10,
-    backgroundColor: "#f0f0f0",
     borderRadius: 5,
     marginBottom: 5,
   },
-  darkCategory: { backgroundColor: "#333" }, // ✅ Dark mode category
 
   categoryTitle: { fontSize: 18, fontWeight: "bold" },
-  text: { color: "#000" }, // ✅ Light mode text
-  darkText: { color: "#FFF" }, // ✅ Dark mode text
 
   bulkActions: {
     flexDirection: "row",
@@ -184,9 +173,7 @@ const styles = StyleSheet.create({
   timerCard: {
     padding: 15,
     borderBottomWidth: 1,
-    backgroundColor: "#FFF",
   },
-  darkCard: { backgroundColor: "#222" }, // ✅ Dark mode card
 
   timerName: { fontSize: 16, fontWeight: "bold" },
 
@@ -197,12 +184,10 @@ const styles = StyleSheet.create({
   },
 
   modalContainer: {
-    backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
     alignItems: "center",
   },
-  darkModal: { backgroundColor: "#333" }, // ✅ Dark mode modal
 
   modalTitle: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
   modalText: { fontSize: 16, textAlign: "center", marginBottom: 10 },
