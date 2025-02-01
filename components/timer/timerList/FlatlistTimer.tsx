@@ -142,7 +142,7 @@ const FlatlistTimer = ({
                       {item.status === "paused" && (
                         <Button
                           icon="play-circle"
-                          mode="text"
+                          mode="elevated"
                           onPress={() => startTimer(item.id)}
                         >
                           Start
@@ -151,7 +151,7 @@ const FlatlistTimer = ({
                       {item.status === "running" && (
                         <Button
                           icon="pause-circle"
-                          mode="text"
+                          mode="elevated"
                           onPress={() => pauseTimer(item.id)}
                         >
                           Pause
@@ -159,7 +159,7 @@ const FlatlistTimer = ({
                       )}
                       <Button
                         icon="restore"
-                        mode="text"
+                        mode="elevated"
                         onPress={() => resetTimer(item.id, item.duration)}
                       >
                         Reset
@@ -168,7 +168,6 @@ const FlatlistTimer = ({
                         icon="delete"
                         mode="text"
                         onPress={() => deleteTimer(item.id)}
-                        color="red"
                       >
                         Delete
                       </Button>
