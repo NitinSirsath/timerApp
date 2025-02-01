@@ -10,25 +10,35 @@ export default function AboutMe() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Card mode="elevated" style={styles.card}>
+      <Card
+        mode="elevated"
+        style={[styles.card, { backgroundColor: colors.card }]}
+      >
         <Card.Title
           title="Nitin Sirsath"
           subtitle="Frontend Developer"
-          left={(props) => <Avatar.Icon {...props} icon="account-circle" />}
+          left={(props) => (
+            <Avatar.Icon
+              {...props}
+              icon="account-circle"
+              color="white"
+              style={{ backgroundColor: colors.primary }}
+            />
+          )}
           titleStyle={[styles.title, { color: colors.text }]}
           subtitleStyle={[styles.subtitle, { color: colors.text }]}
         />
-        <Divider />
+        <Divider style={{ backgroundColor: colors.border }} />
 
         <Card.Content>
           <Text style={[styles.text, { color: colors.text }]}>
-            Passionate frontend engineer with expertise in React,React Native,
+            Passionate frontend engineer with expertise in React, React Native,
             TypeScript, Zustand, and MUI. Focused on building modern,
             high-performance, and scalable UIs.
           </Text>
         </Card.Content>
 
-        <Divider />
+        <Divider style={{ backgroundColor: colors.border }} />
         <Card.Content style={styles.contactContainer}>
           <View style={styles.contactItem}>
             <MaterialIcons name="email" size={20} color={colors.text} />
@@ -51,19 +61,23 @@ export default function AboutMe() {
           </View>
         </Card.Content>
 
-        <Divider />
+        <Divider style={{ backgroundColor: colors.border }} />
         <Card.Actions>
           <Button
-            icon={() => <MaterialIcons name="language" size={20} />}
+            icon={() => (
+              <MaterialIcons name="language" size={20} color="white" />
+            )}
             mode="contained"
+            style={{ backgroundColor: colors.primary }}
             onPress={() => openLink("https://nitinsirsath.netlify.app/")}
           >
             Portfolio
           </Button>
 
           <Button
-            icon={() => <MaterialIcons name="code" size={20} />}
+            icon={() => <MaterialIcons name="code" size={20} color="white" />}
             mode="contained"
+            style={{ backgroundColor: colors.primary }}
             onPress={() => openLink("https://github.com/nitinsirsath")}
           >
             GitHub
