@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 import { useThemeStore } from "@/store/useThemeStore";
-import { MaterialIcons } from "@expo/vector-icons"; // ✅ Import Material Icons
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useThemeStore();
@@ -12,7 +12,7 @@ export default function ThemeToggle() {
         {isDarkMode ? "Dark mode" : "Light mode"}
       </Text>
       <MaterialIcons
-        name={isDarkMode ? "dark-mode" : "light-mode"} // ✅ Material Icons for better UI
+        name={isDarkMode ? "dark-mode" : "light-mode"}
         size={24}
         color={isDarkMode ? "#FFD700" : "#333"}
       />
@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
-    paddingHorizontal: 15, // ✅ Increased touchable area
+    paddingHorizontal: 15,
     gap: 8,
-    borderRadius: 10, // ✅ Slightly rounded edges for better UI
+    borderRadius: 10,
   },
   text: {
     fontSize: 14,

@@ -3,7 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 
-// ✅ Define Timer Type
 export interface Timer {
   id: string;
   name: string;
@@ -15,7 +14,6 @@ export interface Timer {
   halfwayAlertTriggered: boolean;
 }
 
-// ✅ Define Zustand Store Type
 interface TimerState {
   timers: Timer[];
   addTimer: (timer: Timer) => Promise<void>;
@@ -28,7 +26,6 @@ interface TimerState {
 export const useTimerStore = create<TimerState>((set, get) => ({
   timers: [],
 
-  // ✅ Load timers from AsyncStorage when the app starts
   loadTimers: async () => {
     const storedTimers = await AsyncStorage.getItem("timers");
     if (storedTimers) {
@@ -36,14 +33,12 @@ export const useTimerStore = create<TimerState>((set, get) => ({
     }
   },
 
-  // ✅ Add a new timer and persist it
   addTimer: async (timer) => {
     const newTimers = [...get().timers, timer];
     set({ timers: newTimers });
     await AsyncStorage.setItem("timers", JSON.stringify(newTimers));
   },
 
-  // ✅ Update a timer and persist changes
   updateTimer: async (id, updates) => {
     const updatedTimers = get().timers.map((t) =>
       t.id === id ? { ...t, ...updates } : t
@@ -52,14 +47,12 @@ export const useTimerStore = create<TimerState>((set, get) => ({
     await AsyncStorage.setItem("timers", JSON.stringify(updatedTimers));
   },
 
-  // ✅ Delete a timer and persist changes
   deleteTimer: async (id) => {
     const remainingTimers = get().timers.filter((t) => t.id !== id);
     set({ timers: remainingTimers });
     await AsyncStorage.setItem("timers", JSON.stringify(remainingTimers));
   },
 
-  // ✅ Export Timers as a JSON File
   exportTimers: async () => {
     try {
       const timers = get().timers;
@@ -68,16 +61,13 @@ export const useTimerStore = create<TimerState>((set, get) => ({
         return;
       }
 
-      // ✅ Convert timers to JSON
       const json = JSON.stringify(timers, null, 2);
       const fileUri = FileSystem.documentDirectory + "timers.json";
 
-      // ✅ Save JSON file
       await FileSystem.writeAsStringAsync(fileUri, json, {
         encoding: FileSystem.EncodingType.UTF8,
       });
 
-      // ✅ Share or download the file
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(fileUri);
       } else {

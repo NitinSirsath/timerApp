@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// ✅ Define Zustand Store Type
 interface ThemeState {
   theme: "light" | "dark";
   toggleTheme: () => void;
@@ -11,7 +10,6 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>((set, get) => ({
   theme: "light", // Default theme
 
-  // ✅ Load theme from AsyncStorage
   loadTheme: async () => {
     const storedTheme = await AsyncStorage.getItem("theme");
     if (storedTheme) {
@@ -19,7 +17,6 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
     }
   },
 
-  // ✅ Toggle and persist theme
   toggleTheme: async () => {
     const newTheme = get().theme === "light" ? "dark" : "light";
     set({ theme: newTheme });
