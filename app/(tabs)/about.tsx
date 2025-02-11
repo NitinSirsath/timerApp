@@ -54,7 +54,7 @@ export default function AboutMe() {
             <MaterialIcons name="phone" size={20} color={colors.text} />
             <Text
               style={[styles.contactText, { color: colors.text }]}
-              onPress={() => openLink("tel:+919890320142")}
+              onPress={() => openLink("tel:+917507609484")}
             >
               +91 7507609484
             </Text>
